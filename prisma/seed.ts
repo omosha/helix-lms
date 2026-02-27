@@ -7,7 +7,21 @@ const db = new PrismaClient();
 async function main() {
   console.log("🌱 Seeding Helix LMS database...");
 
-  // Create admin user
+  // Primary admin — Brant Hindman
+  const brantPassword = await bcrypt.hash("HelixAdmin2026!", 12);
+  const brant = await db.user.upsert({
+    where: { email: "branthindman@gmail.com" },
+    update: { role: "ADMIN", name: "Brant Hindman" },
+    create: {
+      email: "branthindman@gmail.com",
+      name: "Brant Hindman",
+      password: brantPassword,
+      role: "ADMIN",
+    },
+  });
+  console.log("✅ Primary admin:", brant.email);
+
+  // Create fallback admin user
   const adminPassword = await bcrypt.hash("admin123", 12);
   const admin = await db.user.upsert({
     where: { email: "admin@helixacademy.org" },
