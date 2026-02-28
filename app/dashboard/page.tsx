@@ -4,14 +4,23 @@ import { db } from "@/lib/db";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import {
-  ArrowRight,
-  BookOpen,
-  CheckCircle2,
-  Award,
-  Flame,
-  LayoutDashboard,
-} from "lucide-react";
+import { ArrowRight, CheckCircle2, Circle, Flame, Sparkles } from "lucide-react";
+
+// Artifact framing — what students "made" each week
+const WEEK_ARTIFACTS: Record<number, string> = {
+  1: "Set up your digital home base",
+  2: "Built your Pinterest inspiration board",
+  3: "Created your personal avatar",
+  4: "Wrote your Dream Day story",
+  5: "Made your mood map",
+  6: "Designed your vision board",
+  7: "Built your personal brand board",
+  8: "Created your digital introduction",
+  9: "Made your first Canva design",
+  10: "Wrote your career interests page",
+  11: "Built your digital portfolio draft",
+  12: "Completed your Semester 1 showcase",
+};
 
 export default async function DashboardPage() {
   const session = await auth();
@@ -39,314 +48,298 @@ export default async function DashboardPage() {
 
   if (!user) redirect("/signin");
 
+  const completedWeekIds = new Set(user.progress.map((p) => p.weekId));
   const totalCompleted = user.progress.length;
-  const lastCompleted = user.progress[0];
+  const firstName = user.name?.split(" ")[0] ?? "there";
 
   return (
     <div style={{ backgroundColor: "#F8FAFC" }} className="min-h-screen">
-      {/* Header */}
+
+      {/* ── Header ── */}
       <div style={{ backgroundColor: "#0F1F3D" }} className="py-10 px-4">
         <div className="max-w-7xl mx-auto">
           <div className="flex items-start justify-between">
             <div>
-              <div className="flex items-center gap-2 mb-2">
-                <LayoutDashboard className="w-5 h-5" style={{ color: "#4CBFBF" }} />
-                <span className="text-sm font-medium" style={{ color: "#4CBFBF" }}>
-                  My Dashboard
+              <div className="flex items-center gap-2 mb-3">
+                <Sparkles className="w-4 h-4" style={{ color: "#F07B2A" }} />
+                <span className="text-sm font-medium" style={{ color: "#F07B2A" }}>
+                  Your Journey
                 </span>
               </div>
-              <h1 className="text-3xl font-bold text-white mb-1">
-                Hey, {user.name?.split(" ")[0] ?? "there"}! 👋
-              </h1>
-              <p className="text-slate-400">
+              <h1 className="text-3xl font-bold text-white mb-2">
                 {totalCompleted === 0
-                  ? "Ready to start your journey? Your first week is waiting!"
-                  : `You've completed ${totalCompleted} week${totalCompleted !== 1 ? "s" : ""}. Keep it going!`}
+                  ? `Let's go, ${firstName}! Your first week is ready.`
+                  : `Keep going, ${firstName}! You're doing great.`}
+              </h1>
+              <p style={{ color: "#7fc6c7" }} className="text-sm font-medium">
+                {totalCompleted === 0
+                  ? "Week 1 is waiting — let's make something real today."
+                  : `You've made ${totalCompleted} thing${totalCompleted !== 1 ? "s" : ""} so far. That's real progress.`}
               </p>
             </div>
-
-            {/* Role badge */}
             {user.role === "ADMIN" && (
               <Link href="/admin">
-                <Badge
-                  className="text-xs font-bold"
-                  style={{ backgroundColor: "#7AC943", color: "white", border: "none" }}
-                >
+                <Badge className="text-xs font-bold" style={{ backgroundColor: "#7AC943", color: "white", border: "none" }}>
                   Admin Panel →
                 </Badge>
               </Link>
             )}
           </div>
-
-          {/* Quick stats */}
-          <div className="flex flex-wrap gap-6 mt-8">
-            {[
-              {
-                label: "Weeks Complete",
-                value: totalCompleted,
-                color: "#7AC943",
-              },
-              {
-                label: "Courses Enrolled",
-                value: user.enrollments.length,
-                color: "#4CBFBF",
-              },
-              {
-                label: "Current Streak",
-                value: `${totalCompleted > 0 ? "Active" : "Not started"}`,
-                color: "#F5821E",
-              },
-            ].map((stat) => (
-              <div key={stat.label} className="flex items-center gap-3">
-                <div className="text-2xl font-bold" style={{ color: stat.color }}>
-                  {stat.value}
-                </div>
-                <div className="text-sm text-slate-400">{stat.label}</div>
-              </div>
-            ))}
-          </div>
         </div>
       </div>
 
-      {/* Content */}
+      {/* ── Content ── */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
         {user.enrollments.length === 0 ? (
-          /* Not enrolled */
           <div className="text-center py-16">
-            <BookOpen className="w-12 h-12 mx-auto mb-4 text-slate-300" />
+            <div className="text-5xl mb-4">🌱</div>
             <h2 className="text-xl font-bold mb-2" style={{ color: "#0F1F3D" }}>
-              You&apos;re not enrolled in any courses yet
+              Your journey hasn&apos;t started yet
             </h2>
             <p className="text-slate-500 mb-6">
-              Browse the course catalog and start your Digital Pathways journey.
+              Head to the programs page to get started.
             </p>
             <Link href="/courses">
-              <Button style={{ backgroundColor: "#F5821E", color: "white" }}>
-                Browse Courses <ArrowRight className="w-4 h-4 ml-2" />
+              <Button style={{ backgroundColor: "#F07B2A", color: "white" }}>
+                See the programs <ArrowRight className="w-4 h-4 ml-2" />
               </Button>
             </Link>
           </div>
         ) : (
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            {/* Enrolled courses - main column */}
-            <div className="lg:col-span-2 space-y-6">
-              <h2 className="text-xl font-bold" style={{ color: "#0F1F3D" }}>
-                My Courses
-              </h2>
 
+            {/* ── Main column ── */}
+            <div className="lg:col-span-2 space-y-8">
               {user.enrollments.map((enrollment) => {
                 const course = enrollment.course;
-                const allWeeks = course.weeks;
-                const semester1Weeks = allWeeks.filter((w) => w.semester === 1);
-                const completedWeekIds = new Set(
-                  user.progress.map((p) => p.weekId)
-                );
-                const s1Completed = semester1Weeks.filter((w) =>
-                  completedWeekIds.has(w.id)
-                ).length;
-                const totalCourseCompleted = allWeeks.filter((w) =>
-                  completedWeekIds.has(w.id)
-                ).length;
-
-                // Find next incomplete week in semester 1
-                const nextWeek = semester1Weeks.find(
-                  (w) => !completedWeekIds.has(w.id)
-                );
+                const semester1Weeks = course.weeks.filter((w) => w.semester === 1);
+                const s1Completed = semester1Weeks.filter((w) => completedWeekIds.has(w.id)).length;
+                const nextWeek = semester1Weeks.find((w) => !completedWeekIds.has(w.id));
+                const allDone = s1Completed === semester1Weeks.length && semester1Weeks.length > 0;
 
                 return (
-                  <div
-                    key={enrollment.id}
-                    className="bg-white rounded-2xl border border-slate-100 p-6"
-                  >
-                    <div className="flex items-start justify-between mb-4">
-                      <div className="flex items-center gap-3">
-                        <div
-                          className="w-10 h-10 rounded-xl flex items-center justify-center"
-                          style={{ backgroundColor: "rgba(245,130,30,0.1)", color: "#F5821E" }}
-                        >
-                          <BookOpen className="w-5 h-5" />
-                        </div>
-                        <div>
-                          <h3 className="font-bold" style={{ color: "#0F1F3D" }}>
-                            {course.title}
-                          </h3>
-                          <p className="text-xs text-slate-400">
-                            {totalCourseCompleted} of {allWeeks.length} weeks complete
-                          </p>
-                        </div>
-                      </div>
-                      <Link href={`/courses/${course.slug}`}>
-                        <Button
-                          variant="ghost"
-                          size="sm"
-                          className="text-slate-400 hover:text-slate-700"
-                        >
-                          <ArrowRight className="w-4 h-4" />
-                        </Button>
-                      </Link>
-                    </div>
+                  <div key={enrollment.id} className="space-y-5">
 
-                    {/* Semester 1 progress */}
-                    <div className="mb-5">
-                      <div className="flex justify-between text-sm mb-2">
-                        <span className="text-slate-500 font-medium">
-                          Semester 1 — Envisioning Your Future
-                        </span>
-                        <span style={{ color: "#7AC943" }} className="font-semibold">
-                          {s1Completed}/{semester1Weeks.length}
+                    {/* ── Big "Continue" CTA ── */}
+                    {!allDone && nextWeek && (
+                      <div
+                        className="rounded-2xl p-6"
+                        style={{ background: "linear-gradient(135deg, #0F1F3D 0%, #1a3060 100%)" }}
+                      >
+                        <div className="text-xs font-bold uppercase tracking-wider mb-1" style={{ color: "#7fc6c7" }}>
+                          Up next
+                        </div>
+                        <h3 className="text-xl font-bold text-white mb-1">
+                          Week {nextWeek.weekNumber} — {nextWeek.title}
+                        </h3>
+                        <p className="text-sm mb-4" style={{ color: "#94A3B8" }}>
+                          Semester 1 · {s1Completed} of {semester1Weeks.length} done
+                        </p>
+                        <Link href={`/courses/${course.slug}/semester/1/week/${nextWeek.weekNumber}`}>
+                          <button className="helix-btn-pill helix-btn-primary gap-2">
+                            <Flame className="w-4 h-4" />
+                            Let&apos;s go!
+                            <ArrowRight className="w-4 h-4" />
+                          </button>
+                        </Link>
+                      </div>
+                    )}
+
+                    {allDone && (
+                      <div
+                        className="rounded-2xl p-6 text-center"
+                        style={{ background: "linear-gradient(135deg, #1a3a1a 0%, #0a2a0a 100%)" }}
+                      >
+                        <div className="text-4xl mb-2">🏆</div>
+                        <h3 className="text-xl font-bold text-white mb-1">Semester 1 complete!</h3>
+                        <p className="text-sm" style={{ color: "#7AC943" }}>
+                          You finished all 12 weeks. That&apos;s something to be proud of.
+                        </p>
+                      </div>
+                    )}
+
+                    {/* ── Journey map — Semester 1 weeks ── */}
+                    <div className="bg-white rounded-2xl border border-slate-100 p-6">
+                      <div className="flex items-center justify-between mb-5">
+                        <div>
+                          <div className="text-xs font-bold uppercase tracking-wider mb-0.5" style={{ color: "#F07B2A" }}>
+                            Semester 1
+                          </div>
+                          <h3 className="font-bold" style={{ color: "#0F1F3D" }}>
+                            Envisioning Your Future
+                          </h3>
+                        </div>
+                        <span className="text-sm font-semibold" style={{ color: "#7AC943" }}>
+                          {s1Completed} / {semester1Weeks.length}
                         </span>
                       </div>
-                      <div className="w-full h-3 rounded-full bg-slate-100">
+
+                      {/* Progress bar */}
+                      <div className="w-full h-2 rounded-full bg-slate-100 mb-6">
                         <div
-                          className="h-3 rounded-full transition-all duration-700"
+                          className="h-2 rounded-full transition-all duration-700"
                           style={{
                             width: `${semester1Weeks.length > 0 ? (s1Completed / semester1Weeks.length) * 100 : 0}%`,
-                            backgroundColor: s1Completed === semester1Weeks.length ? "#7AC943" : "#F5821E",
+                            backgroundColor: allDone ? "#7AC943" : "#F07B2A",
                           }}
                         />
                       </div>
-                    </div>
 
-                    {/* Continue CTA */}
-                    {nextWeek ? (
-                      <Link
-                        href={`/courses/${course.slug}/semester/1/week/${nextWeek.weekNumber}`}
-                      >
-                        <Button
-                          className="w-full gap-2"
-                          style={{ backgroundColor: "#0F1F3D", color: "white" }}
-                        >
-                          <Flame className="w-4 h-4" style={{ color: "#F5821E" }} />
-                          Continue: Week {nextWeek.weekNumber} — {nextWeek.title}
-                        </Button>
-                      </Link>
-                    ) : s1Completed === semester1Weeks.length && semester1Weeks.length > 0 ? (
-                      <div
-                        className="flex items-center justify-center gap-2 p-3 rounded-xl"
-                        style={{ backgroundColor: "rgba(122,201,67,0.1)", color: "#7AC943" }}
-                      >
-                        <CheckCircle2 className="w-4 h-4" />
-                        <span className="font-semibold text-sm">
-                          Semester 1 Complete! Amazing work!
-                        </span>
+                      {/* Week-by-week journey */}
+                      <div className="space-y-2">
+                        {semester1Weeks.map((week) => {
+                          const done = completedWeekIds.has(week.id);
+                          const isCurrent = nextWeek?.id === week.id;
+                          return (
+                            <Link
+                              key={week.id}
+                              href={`/courses/${course.slug}/semester/1/week/${week.weekNumber}`}
+                            >
+                              <div
+                                className={`flex items-center gap-3 p-3 rounded-xl transition-all ${
+                                  done
+                                    ? "bg-green-50 border border-green-100"
+                                    : isCurrent
+                                    ? "border-2 cursor-pointer hover:shadow-sm"
+                                    : "opacity-50 cursor-default"
+                                }`}
+                                style={isCurrent ? { borderColor: "#F07B2A", backgroundColor: "rgba(240,123,42,0.04)" } : {}}
+                              >
+                                <div className="shrink-0">
+                                  {done ? (
+                                    <CheckCircle2 className="w-5 h-5" style={{ color: "#7AC943" }} />
+                                  ) : isCurrent ? (
+                                    <div className="w-5 h-5 rounded-full border-2 flex items-center justify-center" style={{ borderColor: "#F07B2A" }}>
+                                      <div className="w-2 h-2 rounded-full" style={{ backgroundColor: "#F07B2A" }} />
+                                    </div>
+                                  ) : (
+                                    <Circle className="w-5 h-5 text-slate-300" />
+                                  )}
+                                </div>
+                                <div className="flex-1 min-w-0">
+                                  <div className="flex items-center gap-2">
+                                    <span className="text-xs text-slate-400 shrink-0">
+                                      Week {week.weekNumber}
+                                    </span>
+                                    {isCurrent && (
+                                      <span className="text-xs font-bold px-2 py-0.5 rounded-full" style={{ backgroundColor: "rgba(240,123,42,0.1)", color: "#F07B2A" }}>
+                                        Up next
+                                      </span>
+                                    )}
+                                  </div>
+                                  <div className="text-sm font-medium truncate" style={{ color: done ? "#166534" : "#0F1F3D" }}>
+                                    {week.title}
+                                  </div>
+                                  {done && WEEK_ARTIFACTS[week.weekNumber] && (
+                                    <div className="text-xs text-slate-400 mt-0.5">
+                                      ✓ {WEEK_ARTIFACTS[week.weekNumber]}
+                                    </div>
+                                  )}
+                                </div>
+                                {(done || isCurrent) && (
+                                  <ArrowRight className="w-4 h-4 shrink-0 text-slate-300" />
+                                )}
+                              </div>
+                            </Link>
+                          );
+                        })}
                       </div>
-                    ) : null}
+                    </div>
                   </div>
                 );
               })}
             </div>
 
-            {/* Right sidebar */}
+            {/* ── Sidebar ── */}
             <div className="space-y-6">
-              {/* Achievements */}
+
+              {/* What you've made */}
+              {totalCompleted > 0 && (
+                <div className="bg-white rounded-2xl border border-slate-100 p-6">
+                  <h3 className="font-bold mb-4" style={{ color: "#0F1F3D" }}>
+                    Look What You Made 🎨
+                  </h3>
+                  <div className="space-y-3">
+                    {user.progress.slice(0, 4).map((p) => (
+                      <div key={p.id} className="flex items-start gap-2">
+                        <CheckCircle2 className="w-4 h-4 shrink-0 mt-0.5" style={{ color: "#7AC943" }} />
+                        <div>
+                          <div className="text-sm font-medium" style={{ color: "#0F1F3D" }}>
+                            {p.week.title}
+                          </div>
+                          {WEEK_ARTIFACTS[p.week.weekNumber] && (
+                            <div className="text-xs text-slate-400">
+                              {WEEK_ARTIFACTS[p.week.weekNumber]}
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    ))}
+                    {totalCompleted > 4 && (
+                      <p className="text-xs text-slate-400">
+                        + {totalCompleted - 4} more things made
+                      </p>
+                    )}
+                  </div>
+                </div>
+              )}
+
+              {/* Milestones */}
               <div className="bg-white rounded-2xl border border-slate-100 p-6">
-                <h3
-                  className="flex items-center gap-2 font-bold mb-4"
-                  style={{ color: "#0F1F3D" }}
-                >
-                  <Award className="w-5 h-5" style={{ color: "#F5821E" }} />
+                <h3 className="font-bold mb-4" style={{ color: "#0F1F3D" }}>
                   Your Milestones
                 </h3>
                 <div className="space-y-3">
                   {[
-                    {
-                      label: "First Week Done!",
-                      unlocked: totalCompleted >= 1,
-                      color: "#F5821E",
-                    },
-                    {
-                      label: "Halfway There (6 weeks)",
-                      unlocked: totalCompleted >= 6,
-                      color: "#4CBFBF",
-                    },
-                    {
-                      label: "Semester 1 Graduate",
-                      unlocked: totalCompleted >= 12,
-                      color: "#7AC943",
-                    },
+                    { label: "First thing made!", sub: "Week 1 done", unlocked: totalCompleted >= 1, color: "#F07B2A", emoji: "⭐" },
+                    { label: "Halfway through!", sub: "6 weeks done", unlocked: totalCompleted >= 6, color: "#5CBFBF", emoji: "🌟" },
+                    { label: "Semester 1 graduate", sub: "All 12 weeks done", unlocked: totalCompleted >= 12, color: "#7AC943", emoji: "🏆" },
                   ].map((badge) => (
                     <div
                       key={badge.label}
-                      className={`flex items-center gap-3 p-3 rounded-xl transition-all ${
-                        badge.unlocked ? "opacity-100" : "opacity-40"
-                      }`}
-                      style={{
-                        backgroundColor: badge.unlocked
-                          ? `${badge.color}10`
-                          : "#F8FAFC",
-                      }}
+                      className={`flex items-center gap-3 p-3 rounded-xl transition-all ${badge.unlocked ? "" : "opacity-40"}`}
+                      style={{ backgroundColor: badge.unlocked ? `${badge.color}12` : "#F8FAFC" }}
                     >
                       <div
-                        className="w-8 h-8 rounded-lg flex items-center justify-center text-lg"
-                        style={{
-                          backgroundColor: badge.unlocked ? badge.color : "#E2E8F0",
-                        }}
+                        className="w-9 h-9 rounded-lg flex items-center justify-center text-lg shrink-0"
+                        style={{ backgroundColor: badge.unlocked ? badge.color : "#E2E8F0" }}
                       >
-                        {badge.unlocked ? "⭐" : "🔒"}
+                        {badge.unlocked ? badge.emoji : "🔒"}
                       </div>
-                      <span
-                        className="text-sm font-medium"
-                        style={{ color: badge.unlocked ? "#0F1F3D" : "#94A3B8" }}
-                      >
-                        {badge.label}
-                      </span>
+                      <div>
+                        <div className="text-sm font-semibold" style={{ color: badge.unlocked ? "#0F1F3D" : "#94A3B8" }}>
+                          {badge.label}
+                        </div>
+                        <div className="text-xs text-slate-400">{badge.sub}</div>
+                      </div>
                     </div>
                   ))}
                 </div>
               </div>
 
-              {/* Recent activity */}
-              {lastCompleted && (
-                <div className="bg-white rounded-2xl border border-slate-100 p-6">
-                  <h3 className="font-bold mb-3" style={{ color: "#0F1F3D" }}>
-                    Last Completed
-                  </h3>
-                  <div className="flex items-center gap-3">
-                    <CheckCircle2 className="w-5 h-5 shrink-0" style={{ color: "#7AC943" }} />
-                    <div>
-                      <div className="text-sm font-medium" style={{ color: "#0F1F3D" }}>
-                        {lastCompleted.week.title}
-                      </div>
-                      <div className="text-xs text-slate-400">
-                        Week {lastCompleted.week.weekNumber}, Semester{" "}
-                        {lastCompleted.week.semester}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              )}
-
-              {/* Personal Pathway Profile teaser */}
+              {/* Portfolio teaser */}
               <div
                 className="p-5 rounded-2xl"
-                style={{
-                  background: "linear-gradient(135deg, #0F1F3D, #1a3060)",
-                }}
+                style={{ background: "linear-gradient(135deg, #0F1F3D, #1a3060)" }}
               >
-                <div
-                  className="text-xs font-bold uppercase tracking-wider mb-2"
-                  style={{ color: "#4CBFBF" }}
-                >
-                  Coming at Year 1 End
+                <div className="text-xs font-bold uppercase tracking-wider mb-2" style={{ color: "#7fc6c7" }}>
+                  Coming at Semester End
                 </div>
-                <h4 className="text-white font-bold mb-1">
-                  Personal Pathway Profile
-                </h4>
-                <p className="text-xs text-slate-400 leading-relaxed">
-                  Complete all of Year 1 to receive your personalized profile:
-                  interest clusters, skill strengths, and suggested Year 2 pathway.
+                <h4 className="text-white font-bold mb-1">Your Digital Portfolio</h4>
+                <p className="text-xs leading-relaxed mb-3" style={{ color: "#94A3B8" }}>
+                  Complete all 12 weeks to get your personal portfolio — everything you made, all in one place.
                 </p>
-                <div className="mt-3 h-1.5 rounded-full bg-white/10">
+                <div className="h-1.5 rounded-full bg-white/10 mb-1">
                   <div
-                    className="h-1.5 rounded-full"
+                    className="h-1.5 rounded-full transition-all duration-700"
                     style={{
-                      width: `${Math.min((totalCompleted / 24) * 100, 100)}%`,
-                      backgroundColor: "#4CBFBF",
+                      width: `${Math.min((totalCompleted / 12) * 100, 100)}%`,
+                      backgroundColor: "#7fc6c7",
                     }}
                   />
                 </div>
-                <div className="text-xs text-slate-500 mt-1">
-                  {totalCompleted}/24 weeks complete
+                <div className="text-xs" style={{ color: "#64748B" }}>
+                  {totalCompleted}/12 weeks done
                 </div>
               </div>
             </div>

@@ -89,7 +89,7 @@ export default async function WeekLessonPage({ params }: PageProps) {
   });
 
   return (
-    <div className="bg-white min-h-screen">
+    <div className="bg-white min-h-screen pb-24 sm:pb-0">
       {/* Top progress bar */}
       <div className="h-1 bg-slate-100">
         <div
@@ -208,29 +208,34 @@ export default async function WeekLessonPage({ params }: PageProps) {
             >
               {isCompleted ? (
                 <div className="flex items-center gap-3 text-center justify-center">
-                  <CheckCircle2
-                    className="w-8 h-8"
-                    style={{ color: "#7AC943" }}
-                  />
+                  <CheckCircle2 className="w-8 h-8" style={{ color: "#7AC943" }} />
                   <div>
-                    <div
-                      className="text-lg font-bold"
-                      style={{ color: "#7AC943" }}
-                    >
+                    <div className="text-lg font-bold" style={{ color: "#7AC943" }}>
                       You crushed it! Week {week.weekNumber} is done.
                     </div>
                     <div className="text-sm text-slate-500">
-                      Keep going — the next week is waiting for you!
+                      {nextWeek
+                        ? `Week ${nextWeek.weekNumber} is waiting for you!`
+                        : "You finished the semester. Amazing!"}
                     </div>
                   </div>
                 </div>
               ) : (
                 <div className="text-center">
                   <p className="text-slate-600 mb-4 text-sm">
-                    Finished all the activities? Make sure you saved your work,
-                    then mark this week complete!
+                    Finished the activities? Make sure you saved your work, then mark this week complete!
                   </p>
-                  <MarkCompleteButton weekId={week.id} courseSlug={courseSlug} />
+                  {/* Desktop inline button */}
+                  <div className="hidden sm:block">
+                    <MarkCompleteButton
+                      weekId={week.id}
+                      courseSlug={courseSlug}
+                      weekNumber={week.weekNumber}
+                      sem={Number(sem)}
+                      nextWeekNumber={nextWeek?.weekNumber}
+                      nextWeekTitle={nextWeek?.title}
+                    />
+                  </div>
                 </div>
               )}
             </div>
@@ -303,9 +308,7 @@ export default async function WeekLessonPage({ params }: PageProps) {
         </div>
 
         {/* Week Navigation */}
-        <div
-          className="mt-12 pt-8 flex items-center justify-between border-t border-slate-100"
-        >
+        <div className="mt-12 pt-8 flex items-center justify-between border-t border-slate-100">
           {prevWeek ? (
             <Link
               href={`/courses/${courseSlug}/semester/${sem}/week/${prevWeek.weekNumber}`}
@@ -344,6 +347,23 @@ export default async function WeekLessonPage({ params }: PageProps) {
           )}
         </div>
       </div>
+
+      {/* ── Sticky mobile "Mark Complete" bar ── */}
+      {!isCompleted && (
+        <div
+          className="sm:hidden fixed bottom-0 left-0 right-0 z-40 px-4 py-3 border-t"
+          style={{ backgroundColor: "#FFFFFF", borderColor: "#E2E8F0", boxShadow: "0 -4px 16px rgba(0,0,0,0.08)" }}
+        >
+          <MarkCompleteButton
+            weekId={week.id}
+            courseSlug={courseSlug}
+            weekNumber={week.weekNumber}
+            sem={Number(sem)}
+            nextWeekNumber={nextWeek?.weekNumber}
+            nextWeekTitle={nextWeek?.title}
+          />
+        </div>
+      )}
     </div>
   );
 }
