@@ -1,6 +1,9 @@
-import "dotenv/config";
+import * as dotenv from "dotenv";
 
-// Prisma config - using schema.prisma with classic engine
+// Load .env first, then .env.local overrides it
+dotenv.config({ path: ".env" });
+dotenv.config({ path: ".env.local", override: true });
+
 export default {
   schema: "prisma/schema.prisma",
 };
