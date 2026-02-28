@@ -17,14 +17,14 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Helix Adult Academy — Digital Pathways Program",
+  title: "The Helix Adult Academy — Nurturing Lifelong Learners",
   description:
-    "A learning management portal for the Digital Pathways Program — a 4-year workforce readiness track designed for young adults with disabilities.",
-  keywords: ["LMS", "disability", "workforce", "digital skills", "young adults"],
-  authors: [{ name: "Helix Adult Academy" }],
+    "The Helix Adult Academy offers flexible programs and workshops for adult learners in San Rafael, CA — building real skills, confidence, and community.",
+  keywords: ["adult education", "lifelong learning", "San Rafael", "workshops", "programs", "adult academy"],
+  authors: [{ name: "The Helix Adult Academy" }],
   openGraph: {
-    title: "Helix Adult Academy",
-    description: "Your Future Starts Here",
+    title: "The Helix Adult Academy",
+    description: "Nurturing Lifelong Learners — San Rafael, CA",
     type: "website",
   },
 };

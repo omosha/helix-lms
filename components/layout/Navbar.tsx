@@ -3,8 +3,25 @@
 import Link from "next/link";
 import { useSession, signOut } from "next-auth/react";
 import { useState } from "react";
-import { Button } from "@/components/ui/button";
 import { Menu, X, BookOpen, LayoutDashboard, Users, LogOut, LogIn } from "lucide-react";
+
+// The Helix Adult Academy bird/wing logo mark
+function HelixMark({ size = 44 }: { size?: number }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 44 44" fill="none" aria-hidden="true">
+      {/* Orange upper wing */}
+      <path
+        d="M22 22 C16 7 40 4 39 19 C38 29 26 26 22 22Z"
+        fill="#F07B2A"
+      />
+      {/* Teal lower wing */}
+      <path
+        d="M22 22 C28 37 4 40 5 25 C6 15 18 18 22 22Z"
+        fill="#5CBFBF"
+      />
+    </svg>
+  );
+}
 
 export function Navbar() {
   const { data: session } = useSession();
@@ -13,53 +30,33 @@ export function Navbar() {
   return (
     <nav
       className="sticky top-0 z-50 w-full"
-      style={{ backgroundColor: "#0F1F3D" }}
+      style={{ backgroundColor: "#7fc6c7", boxShadow: "0 2px 0 rgba(0,0,0,0.10)" }}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
-          <Link href="/" className="flex items-center gap-3 group">
-            <div
-              className="w-9 h-9 rounded-full flex items-center justify-center font-bold text-sm"
-              style={{ backgroundColor: "#F5821E", color: "#0F1F3D" }}
-            >
-              H
-            </div>
+          <Link href="/" className="flex items-center gap-2.5 group" style={{ textDecoration: "none" }}>
+            <HelixMark size={40} />
             <div className="hidden sm:block">
-              <div
-                className="text-sm font-bold leading-tight"
-                style={{ color: "#FFFFFF" }}
-              >
-                Helix Adult Academy
+              <div className="text-sm font-bold leading-tight" style={{ color: "#1e2f4a" }}>
+                The Helix Adult Academy
               </div>
-              <div className="text-xs" style={{ color: "#4CBFBF" }}>
-                Digital Pathways Program
+              <div className="text-xs font-medium" style={{ color: "rgba(30,47,74,0.65)" }}>
+                Nurturing Lifelong Learners
               </div>
             </div>
           </Link>
 
-          {/* Desktop Nav */}
-          <div className="hidden md:flex items-center gap-6">
-            <Link
-              href="/courses"
-              className="flex items-center gap-1.5 text-sm font-medium transition-colors"
-              style={{ color: "#CBD5E1" }}
-              onMouseEnter={(e) => (e.currentTarget.style.color = "#F5821E")}
-              onMouseLeave={(e) => (e.currentTarget.style.color = "#CBD5E1")}
-            >
-              <BookOpen className="w-4 h-4" />
-              Courses
+          {/* Desktop Nav pills */}
+          <div className="hidden md:flex items-center gap-2">
+            <Link href="/courses" className="helix-nav-pill">
+              <BookOpen className="w-3.5 h-3.5" />
+              Programs &amp; Workshops
             </Link>
 
             {session?.user && (
-              <Link
-                href="/dashboard"
-                className="flex items-center gap-1.5 text-sm font-medium transition-colors"
-                style={{ color: "#CBD5E1" }}
-                onMouseEnter={(e) => (e.currentTarget.style.color = "#F5821E")}
-                onMouseLeave={(e) => (e.currentTarget.style.color = "#CBD5E1")}
-              >
-                <LayoutDashboard className="w-4 h-4" />
+              <Link href="/dashboard" className="helix-nav-pill">
+                <LayoutDashboard className="w-3.5 h-3.5" />
                 My Dashboard
               </Link>
             )}
@@ -67,93 +64,92 @@ export function Navbar() {
             {session?.user?.role === "ADMIN" && (
               <Link
                 href="/admin"
-                className="flex items-center gap-1.5 text-sm font-medium transition-colors"
-                style={{ color: "#7AC943" }}
-                onMouseEnter={(e) => (e.currentTarget.style.color = "#FFFFFF")}
-                onMouseLeave={(e) => (e.currentTarget.style.color = "#7AC943")}
+                className="helix-nav-pill"
+                style={{ background: "rgba(122,201,67,0.25)", color: "#2d5a1b" }}
               >
-                <Users className="w-4 h-4" />
+                <Users className="w-3.5 h-3.5" />
                 Admin
               </Link>
             )}
           </div>
 
-          {/* Auth Buttons */}
-          <div className="hidden md:flex items-center gap-3">
+          {/* Auth area */}
+          <div className="hidden md:flex items-center gap-2">
             {session?.user ? (
               <div className="flex items-center gap-3">
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-2 px-3 py-1.5 rounded-full" style={{ background: "rgba(46,69,89,0.15)" }}>
                   <div
-                    className="w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold"
-                    style={{ backgroundColor: "#4CBFBF", color: "#0F1F3D" }}
+                    className="w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold"
+                    style={{ backgroundColor: "#F07B2A", color: "white" }}
                   >
-                    {session.user.name?.[0] ?? session.user.email?.[0] ?? "U"}
+                    {session.user.name?.[0]?.toUpperCase() ?? session.user.email?.[0]?.toUpperCase() ?? "U"}
                   </div>
-                  <span className="text-sm" style={{ color: "#CBD5E1" }}>
-                    {session.user.name ?? session.user.email}
+                  <span className="text-sm font-medium" style={{ color: "#1e2f4a" }}>
+                    {session.user.name?.split(" ")[0] ?? session.user.email}
                   </span>
+                  <button
+                    onClick={() => signOut({ callbackUrl: "/" })}
+                    title="Sign out"
+                    className="ml-1 opacity-50 hover:opacity-100 transition-opacity"
+                    style={{ color: "#1e2f4a" }}
+                  >
+                    <LogOut className="w-3.5 h-3.5" />
+                  </button>
                 </div>
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={() => signOut({ callbackUrl: "/" })}
-                  className="text-slate-400 hover:text-white"
-                >
-                  <LogOut className="w-4 h-4" />
-                </Button>
               </div>
             ) : (
               <>
-                <Link href="/signin">
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    className="text-slate-300 hover:text-white"
-                  >
-                    Sign In
-                  </Button>
+                <Link
+                  href="/signin"
+                  className="helix-nav-pill"
+                  style={{ textDecoration: "none" }}
+                >
+                  <LogIn className="w-3.5 h-3.5" />
+                  Sign In
                 </Link>
-                <Link href="/signup">
-                  <Button
-                    size="sm"
-                    className="font-semibold"
-                    style={{ backgroundColor: "#F5821E", color: "#FFFFFF" }}
-                  >
-                    Get Started
-                  </Button>
+                <Link
+                  href="/signup"
+                  className="helix-btn-pill helix-btn-primary text-sm"
+                  style={{ textDecoration: "none" }}
+                >
+                  Register
                 </Link>
               </>
             )}
           </div>
 
-          {/* Mobile Hamburger */}
+          {/* Mobile hamburger */}
           <button
-            className="md:hidden p-2 text-slate-300 hover:text-white"
+            className="md:hidden p-2 rounded-full transition-colors"
+            style={{ background: "rgba(46,69,89,0.18)", color: "#1e2f4a" }}
             onClick={() => setMenuOpen(!menuOpen)}
+            aria-label="Toggle menu"
           >
             {menuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
           </button>
         </div>
 
-        {/* Mobile Menu */}
+        {/* Mobile menu */}
         {menuOpen && (
           <div
-            className="md:hidden py-4 border-t space-y-3"
-            style={{ borderColor: "rgba(255,255,255,0.1)" }}
+            className="md:hidden py-4 space-y-2 border-t"
+            style={{ borderColor: "rgba(30,47,74,0.12)" }}
           >
             <Link
               href="/courses"
               onClick={() => setMenuOpen(false)}
-              className="flex items-center gap-2 px-2 py-2 text-sm text-slate-300 hover:text-white"
+              className="flex items-center gap-2 px-3 py-2.5 rounded-full text-sm font-medium"
+              style={{ background: "rgba(46,69,89,0.15)", color: "#1e2f4a" }}
             >
               <BookOpen className="w-4 h-4" />
-              Courses
+              Programs &amp; Workshops
             </Link>
             {session?.user && (
               <Link
                 href="/dashboard"
                 onClick={() => setMenuOpen(false)}
-                className="flex items-center gap-2 px-2 py-2 text-sm text-slate-300 hover:text-white"
+                className="flex items-center gap-2 px-3 py-2.5 rounded-full text-sm font-medium"
+                style={{ background: "rgba(46,69,89,0.15)", color: "#1e2f4a" }}
               >
                 <LayoutDashboard className="w-4 h-4" />
                 My Dashboard
@@ -163,40 +159,41 @@ export function Navbar() {
               <Link
                 href="/admin"
                 onClick={() => setMenuOpen(false)}
-                className="flex items-center gap-2 px-2 py-2 text-sm"
-                style={{ color: "#7AC943" }}
+                className="flex items-center gap-2 px-3 py-2.5 rounded-full text-sm font-medium"
+                style={{ background: "rgba(122,201,67,0.25)", color: "#2d5a1b" }}
               >
                 <Users className="w-4 h-4" />
                 Admin Panel
               </Link>
             )}
-            <div className="pt-2 flex flex-col gap-2">
+            <div className="pt-2 border-t flex flex-col gap-2" style={{ borderColor: "rgba(30,47,74,0.12)" }}>
               {session?.user ? (
-                <Button
-                  variant="ghost"
-                  size="sm"
+                <button
                   onClick={() => signOut({ callbackUrl: "/" })}
-                  className="w-full justify-start text-slate-300"
+                  className="flex items-center gap-2 px-3 py-2.5 rounded-full text-sm font-medium w-full"
+                  style={{ background: "rgba(46,69,89,0.15)", color: "#1e2f4a" }}
                 >
-                  <LogOut className="w-4 h-4 mr-2" />
-                  Sign Out
-                </Button>
+                  <LogOut className="w-4 h-4" />
+                  Sign Out ({session.user.name?.split(" ")[0] ?? session.user.email})
+                </button>
               ) : (
                 <>
-                  <Link href="/signin" onClick={() => setMenuOpen(false)}>
-                    <Button variant="ghost" size="sm" className="w-full text-slate-300">
-                      <LogIn className="w-4 h-4 mr-2" />
-                      Sign In
-                    </Button>
+                  <Link
+                    href="/signin"
+                    onClick={() => setMenuOpen(false)}
+                    className="flex items-center gap-2 px-3 py-2.5 rounded-full text-sm font-medium"
+                    style={{ background: "rgba(46,69,89,0.15)", color: "#1e2f4a" }}
+                  >
+                    <LogIn className="w-4 h-4" />
+                    Sign In
                   </Link>
-                  <Link href="/signup" onClick={() => setMenuOpen(false)}>
-                    <Button
-                      size="sm"
-                      className="w-full"
-                      style={{ backgroundColor: "#F5821E" }}
-                    >
-                      Get Started Free
-                    </Button>
+                  <Link
+                    href="/signup"
+                    onClick={() => setMenuOpen(false)}
+                    className="helix-btn-pill helix-btn-primary text-sm w-full justify-center"
+                    style={{ textDecoration: "none" }}
+                  >
+                    Register
                   </Link>
                 </>
               )}

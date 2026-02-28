@@ -1,10 +1,25 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Star, Sparkles, BookOpen, Award, Users } from "lucide-react";
+import { ArrowRight, BookOpen, Award, Users, Calendar, MapPin, Mail } from "lucide-react";
 
 export default function LandingPage() {
   return (
     <div className="bg-white">
+
+      {/* Registration Banner */}
+      <div
+        className="py-3 px-4 text-center text-sm font-semibold"
+        style={{ backgroundColor: "#F07B2A", color: "#ffffff" }}
+      >
+        <span className="inline-flex items-center gap-2">
+          <Calendar className="w-4 h-4" />
+          Registration opens April 2026 —{" "}
+          <Link href="/signup" className="underline underline-offset-2 hover:no-underline">
+            Join the waitlist
+          </Link>
+        </span>
+      </div>
+
       {/* Hero */}
       <section
         className="relative overflow-hidden py-24 sm:py-32"
@@ -13,11 +28,11 @@ export default function LandingPage() {
         {/* Background decoration */}
         <div
           className="absolute top-0 right-0 w-96 h-96 rounded-full opacity-10 blur-3xl"
-          style={{ backgroundColor: "#F5821E", transform: "translate(30%, -30%)" }}
+          style={{ backgroundColor: "#F07B2A", transform: "translate(30%, -30%)" }}
         />
         <div
           className="absolute bottom-0 left-0 w-80 h-80 rounded-full opacity-10 blur-3xl"
-          style={{ backgroundColor: "#4CBFBF", transform: "translate(-30%, 30%)" }}
+          style={{ backgroundColor: "#7fc6c7", transform: "translate(-30%, 30%)" }}
         />
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
@@ -25,28 +40,28 @@ export default function LandingPage() {
             {/* Badge */}
             <div
               className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium mb-6"
-              style={{ backgroundColor: "rgba(245,130,30,0.15)", color: "#F5821E" }}
+              style={{ backgroundColor: "rgba(127,198,199,0.15)", color: "#7fc6c7" }}
             >
-              <Sparkles className="w-4 h-4" />
-              Digital Pathways Program — Year 1 Now Enrolling
+              <MapPin className="w-4 h-4" />
+              San Rafael, CA · Adult Education Programs
             </div>
 
             <h1
-              className="text-4xl sm:text-5xl lg:text-6xl font-bold leading-tight mb-6"
+              className="text-4xl sm:text-5xl lg:text-6xl font-bold leading-tight mb-4"
               style={{ color: "#FFFFFF" }}
             >
-              Your Future{" "}
-              <span style={{ color: "#F5821E" }}>Starts</span>{" "}
-              Here.
+              Nurturing{" "}
+              <span style={{ color: "#F07B2A" }}>Lifelong</span>{" "}
+              Learners
             </h1>
 
             <p
               className="text-lg sm:text-xl leading-relaxed mb-8 max-w-2xl"
               style={{ color: "#94A3B8" }}
             >
-              The Digital Pathways Program gives young adults with disabilities the
-              real digital skills, creative confidence, and personal clarity needed
-              to build a future they're proud of.
+              The Helix Adult Academy offers flexible programs and workshops for
+              adult learners — building real skills, confidence, and community
+              in a supportive, dignity-centered environment.
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4">
@@ -54,9 +69,9 @@ export default function LandingPage() {
                 <Button
                   size="lg"
                   className="h-14 px-8 text-base font-semibold rounded-xl gap-2"
-                  style={{ backgroundColor: "#F5821E", color: "#FFFFFF" }}
+                  style={{ backgroundColor: "#F07B2A", color: "#FFFFFF" }}
                 >
-                  Start Your Journey
+                  Register for April 2026
                   <ArrowRight className="w-5 h-5" />
                 </Button>
               </Link>
@@ -71,7 +86,7 @@ export default function LandingPage() {
                     backgroundColor: "transparent",
                   }}
                 >
-                  Explore the Program
+                  Explore Programs
                 </Button>
               </Link>
             </div>
@@ -79,12 +94,12 @@ export default function LandingPage() {
             {/* Stats */}
             <div className="flex flex-wrap gap-8 mt-12 pt-10 border-t" style={{ borderColor: "rgba(255,255,255,0.1)" }}>
               {[
-                { value: "4 Years", label: "Complete Program" },
-                { value: "8 Semesters", label: "Modular Learning" },
-                { value: "96 Weeks", label: "of Real Skills" },
+                { value: "6 Tracks", label: "Flexible Scheduling" },
+                { value: "Year-Round", label: "Programs Available" },
+                { value: "San Rafael", label: "Northern California" },
               ].map((stat) => (
                 <div key={stat.label}>
-                  <div className="text-2xl font-bold" style={{ color: "#4CBFBF" }}>
+                  <div className="text-2xl font-bold" style={{ color: "#7fc6c7" }}>
                     {stat.value}
                   </div>
                   <div className="text-sm" style={{ color: "#64748B" }}>
@@ -98,19 +113,19 @@ export default function LandingPage() {
       </section>
 
       {/* Mission */}
-      <section className="py-20 bg-white">
+      <section className="py-20" style={{ backgroundColor: "#f0f9f9" }}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-3xl mx-auto text-center mb-16">
             <h2
               className="text-3xl font-bold mb-4"
               style={{ color: "#0F1F3D" }}
             >
-              Built for Young Adults Who Are Ready to Build Something Real
+              A Flexible Program Track for Every Learner
             </h2>
             <p className="text-lg text-slate-600 leading-relaxed">
-              Helix Adult Academy&apos;s Digital Pathways Program is designed specifically for
-              young adults with disabilities — with dignity-centered design, scaffolded
-              step-by-step instruction, and real creative tools that produce real artifacts.
+              Every adult learner has different goals, schedules, and support needs.
+              Our track system gives you the freedom to choose a program structure
+              that works for your life.
             </p>
           </div>
 
@@ -119,29 +134,29 @@ export default function LandingPage() {
             {[
               {
                 icon: <BookOpen className="w-6 h-6" />,
-                color: "#F5821E",
-                bg: "rgba(245,130,30,0.1)",
-                title: "Real Digital Skills",
-                desc: "Google Drive, Canva, Pinterest, ChatGPT — tools used in the real world, taught in the right order.",
+                color: "#F07B2A",
+                bg: "rgba(240,123,42,0.1)",
+                title: "Real Skills",
+                desc: "Hands-on learning across digital tools, creative arts, life skills, and workforce readiness — taught in a real-world context.",
               },
               {
-                icon: <Sparkles className="w-6 h-6" />,
-                color: "#4CBFBF",
-                bg: "rgba(76,191,191,0.1)",
-                title: "Creative Confidence",
-                desc: "Every week produces something you made: an avatar, a comic, a vision board. Real artifacts. Real pride.",
+                icon: <Users className="w-6 h-6" />,
+                color: "#5CBFBF",
+                bg: "rgba(92,191,191,0.1)",
+                title: "Community & Connection",
+                desc: "Build peer relationships and a sense of belonging through collaborative projects, workshops, and shared experiences.",
               },
               {
                 icon: <Award className="w-6 h-6" />,
                 color: "#7AC943",
                 bg: "rgba(122,201,67,0.1)",
-                title: "A Clear Pathway",
-                desc: "4 years. 8 semesters. A graduation with a portfolio, competencies, and a real next step.",
+                title: "Independence & Confidence",
+                desc: "Develop the personal clarity, practical competence, and self-advocacy skills needed to build a future you're proud of.",
               },
             ].map((pillar) => (
               <div
                 key={pillar.title}
-                className="p-8 rounded-2xl border border-slate-100 hover:shadow-md transition-shadow"
+                className="p-8 rounded-2xl border border-slate-100 bg-white hover:shadow-md transition-shadow"
               >
                 <div
                   className="w-12 h-12 rounded-xl flex items-center justify-center mb-4"
@@ -162,98 +177,107 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* Program Arc */}
-      <section className="py-20" style={{ backgroundColor: "#F8FAFC" }}>
+      {/* Program Tracks */}
+      <section className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
+            <div
+              className="text-sm font-bold uppercase tracking-wider mb-2"
+              style={{ color: "#F07B2A" }}
+            >
+              Enrollment Tracks
+            </div>
             <h2 className="text-3xl font-bold mb-4" style={{ color: "#0F1F3D" }}>
-              Vision → Skill → Practice → Portfolio → Pathway
+              Choose the Schedule That Works for You
             </h2>
-            <p className="text-slate-500">
-              Each year builds on the last. Here&apos;s where your journey goes.
+            <p className="text-slate-500 max-w-2xl mx-auto">
+              Whether you&apos;re looking for full immersion or targeted skill-building,
+              you can design a schedule that fits.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
             {[
               {
-                year: "Year 1",
-                theme: "Discovery & Digital Foundations",
-                detail: "Build digital literacy, creative confidence, and identity clarity.",
-                color: "#F5821E",
-                semesters: "Envisioning Your Future · Build What You Imagine",
+                track: "Platinum Track",
+                tagline: "The Full Immersion",
+                desc: "A 6-day weekly rhythm, including specialized Saturday workshops for a deeper dive into community activities.",
+                color: "#F07B2A",
               },
               {
-                year: "Year 2",
-                theme: "Applied Skill Building",
-                detail: "Select a pathway cluster and build a structured digital portfolio.",
-                color: "#4CBFBF",
-                semesters: "Make It Real · Collaborate & Present",
+                track: "Premier Track",
+                tagline: "The Academic Standard",
+                desc: "A full Monday through Friday schedule focused on consistent daily engagement and a steady routine.",
+                color: "#5CBFBF",
               },
               {
-                year: "Year 3",
-                theme: "Workforce Simulation",
-                detail: "Real-world practice: resumes, mock interviews, or micro-business.",
+                track: "Plus Track",
+                tagline: "The Flexible Week",
+                desc: "A Monday through Thursday schedule that balances active learning with a three-day weekend for family time.",
                 color: "#7AC943",
-                semesters: "Practice the Real World · Professional Identity",
               },
               {
-                year: "Year 4",
-                theme: "Transition & Launch",
-                detail: "Final portfolio. Public presentation. Step into your path.",
-                color: "#F5821E",
-                semesters: "Prepare to Launch · Step Into Your Path",
+                track: "Advantage Track",
+                tagline: "The Targeted Approach",
+                desc: "A part-time schedule (morning or afternoon) for students balancing other interests or community commitments.",
+                color: "#F07B2A",
               },
-            ].map((item, i) => (
+              {
+                track: "Access Track",
+                tagline: "The Weekend Connection",
+                desc: "Focused Friday and Saturday programming for those looking for a social and instructional anchor.",
+                color: "#5CBFBF",
+              },
+              {
+                track: "Summer Rec",
+                tagline: "The Bridge Program",
+                desc: "A month-long bridge blending recreational adventure with practical life-skills to foster peer connections.",
+                color: "#7AC943",
+              },
+            ].map((item) => (
               <div
-                key={item.year}
-                className="relative p-6 bg-white rounded-2xl border border-slate-100 hover:shadow-md transition-shadow"
+                key={item.track}
+                className="relative p-6 rounded-2xl border border-slate-100 hover:shadow-md transition-shadow"
               >
                 <div
-                  className="text-3xl font-black mb-1 opacity-15 absolute top-4 right-4"
-                  style={{ color: item.color }}
-                >
-                  {i + 1}
-                </div>
+                  className="w-1 h-10 rounded-full absolute left-0 top-6"
+                  style={{ backgroundColor: item.color }}
+                />
                 <div
-                  className="text-xs font-bold uppercase tracking-wider mb-2"
+                  className="text-xs font-bold uppercase tracking-wider mb-1 pl-3"
                   style={{ color: item.color }}
                 >
-                  {item.year}
+                  {item.track}
                 </div>
-                <h3 className="text-sm font-bold mb-2" style={{ color: "#0F1F3D" }}>
-                  {item.theme}
+                <h3 className="text-sm font-bold mb-2 pl-3" style={{ color: "#0F1F3D" }}>
+                  {item.tagline}
                 </h3>
-                <p className="text-xs text-slate-500 mb-3 leading-relaxed">
-                  {item.detail}
+                <p className="text-xs text-slate-500 leading-relaxed pl-3">
+                  {item.desc}
                 </p>
-                <div
-                  className="text-xs px-3 py-1.5 rounded-full inline-block"
-                  style={{ backgroundColor: `${item.color}15`, color: item.color }}
-                >
-                  {item.semesters}
-                </div>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Course Preview — Semester 1 */}
-      <section className="py-20 bg-white">
+      {/* Course Preview — Digital Pathways */}
+      <section className="py-20" style={{ backgroundColor: "#f0f9f9" }}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col md:flex-row md:items-end justify-between mb-10 gap-4">
             <div>
               <div
                 className="text-sm font-bold uppercase tracking-wider mb-2"
-                style={{ color: "#F5821E" }}
+                style={{ color: "#F07B2A" }}
               >
-                Semester 1 Spotlight
+                Featured Program
               </div>
               <h2 className="text-3xl font-bold" style={{ color: "#0F1F3D" }}>
-                Envisioning Your Future
+                Digital Pathways Program
               </h2>
-              <p className="text-slate-500 mt-2">12 weeks. Real tools. Real things you make.</p>
+              <p className="text-slate-500 mt-2">
+                A 4-year workforce readiness track — 12 weeks at a time.
+              </p>
             </div>
             <Link href="/courses/digital-pathways">
               <Button
@@ -261,25 +285,25 @@ export default function LandingPage() {
                 className="gap-2"
                 style={{ borderColor: "#0F1F3D", color: "#0F1F3D" }}
               >
-                See all 12 weeks <ArrowRight className="w-4 h-4" />
+                View full program <ArrowRight className="w-4 h-4" />
               </Button>
             </Link>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {[
-              { week: 1, title: "Digital Safety & Google Account", tool: "Google Account", color: "#4CBFBF" },
-              { week: 2, title: "Me in Pictures", tool: "Pinterest", color: "#F5821E" },
+              { week: 1, title: "Digital Safety & Google Account", tool: "Google Account", color: "#5CBFBF" },
+              { week: 2, title: "Me in Pictures", tool: "Pinterest", color: "#F07B2A" },
               { week: 3, title: "Build My Avatar", tool: "Avaturn", color: "#7AC943" },
-              { week: 4, title: "My Dream Day Story", tool: "Google Docs", color: "#F5821E" },
-              { week: 5, title: "Mood Mapping & Visual Reflection", tool: "Google Slides", color: "#4CBFBF" },
+              { week: 4, title: "My Dream Day Story", tool: "Google Docs", color: "#F07B2A" },
+              { week: 5, title: "Mood Mapping & Visual Reflection", tool: "Google Slides", color: "#5CBFBF" },
               { week: 6, title: "Vision Board", tool: "Google Slides", color: "#7AC943" },
             ].map((item) => (
               <Link
                 key={item.week}
                 href={`/courses/digital-pathways/semester/1/week/${item.week}`}
               >
-                <div className="p-5 rounded-xl border border-slate-100 hover:shadow-md hover:border-slate-200 transition-all cursor-pointer group">
+                <div className="p-5 rounded-xl border border-slate-100 bg-white hover:shadow-md hover:border-slate-200 transition-all cursor-pointer group">
                   <div className="flex items-center gap-3 mb-3">
                     <div
                       className="w-8 h-8 rounded-lg flex items-center justify-center text-xs font-bold text-white"
@@ -290,7 +314,7 @@ export default function LandingPage() {
                     <span
                       className="text-xs px-2 py-0.5 rounded-full font-medium"
                       style={{
-                        backgroundColor: `${item.color}15`,
+                        backgroundColor: `${item.color}18`,
                         color: item.color,
                       }}
                     >
@@ -318,31 +342,32 @@ export default function LandingPage() {
         }}
       >
         <div className="max-w-3xl mx-auto px-4 text-center">
-          <div className="flex justify-center mb-4">
-            <div className="flex gap-1">
-              {[1, 2, 3, 4, 5].map((i) => (
-                <Star key={i} className="w-5 h-5 fill-current" style={{ color: "#F5821E" }} />
-              ))}
-            </div>
+          <div
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium mb-6"
+            style={{ backgroundColor: "rgba(127,198,199,0.15)", color: "#7fc6c7" }}
+          >
+            <Calendar className="w-4 h-4" />
+            Registration opens April 2026
           </div>
+
           <h2
             className="text-3xl sm:text-4xl font-bold mb-4"
             style={{ color: "#FFFFFF" }}
           >
-            Ready to start building your future?
+            Ready to start your journey?
           </h2>
           <p className="text-lg mb-8" style={{ color: "#94A3B8" }}>
-            Join the Digital Pathways Program and take your first step toward
-            digital confidence, a real portfolio, and a pathway that&apos;s yours.
+            Join The Helix Adult Academy and take your first step toward
+            real skills, community, and a future you&apos;re proud of.
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+          <div className="flex flex-col sm:flex-row gap-4 justify-center mb-8">
             <Link href="/signup">
               <Button
                 size="lg"
                 className="h-14 px-10 text-base font-semibold rounded-xl gap-2"
-                style={{ backgroundColor: "#F5821E", color: "#FFFFFF" }}
+                style={{ backgroundColor: "#F07B2A", color: "#FFFFFF" }}
               >
-                Create Your Free Account
+                Register Now
                 <ArrowRight className="w-5 h-5" />
               </Button>
             </Link>
@@ -361,6 +386,18 @@ export default function LandingPage() {
                 For Program Admins
               </Button>
             </Link>
+          </div>
+
+          {/* Contact info */}
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-6 text-sm" style={{ color: "#64748B" }}>
+            <span className="flex items-center gap-1.5">
+              <MapPin className="w-3.5 h-3.5" />
+              San Rafael, CA 94903
+            </span>
+            <span className="flex items-center gap-1.5">
+              <Mail className="w-3.5 h-3.5" />
+              info@HelixAdultAcademy.org
+            </span>
           </div>
         </div>
       </section>

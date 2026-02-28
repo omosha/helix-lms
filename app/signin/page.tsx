@@ -16,18 +16,18 @@ export default async function SignInPage() {
         {/* Header */}
         <div className="text-center mb-8">
           <Link href="/" className="inline-flex items-center gap-2 mb-6">
-            <div
-              className="w-10 h-10 rounded-full flex items-center justify-center font-bold"
-              style={{ backgroundColor: "#0F1F3D", color: "#F5821E" }}
-            >
-              H
+            <svg width="36" height="36" viewBox="0 0 44 44" fill="none" aria-hidden="true">
+              <path d="M22 22 C16 7 40 4 39 19 C38 29 26 26 22 22Z" fill="#F07B2A" />
+              <path d="M22 22 C28 37 4 40 5 25 C6 15 18 18 22 22Z" fill="#5CBFBF" />
+            </svg>
+            <div>
+              <div className="text-sm font-bold leading-tight" style={{ color: "#0F1F3D" }}>
+                The Helix Adult Academy
+              </div>
+              <div className="text-xs" style={{ color: "#5CBFBF" }}>
+                Nurturing Lifelong Learners
+              </div>
             </div>
-            <span
-              className="text-lg font-bold"
-              style={{ color: "#0F1F3D" }}
-            >
-              Helix Adult Academy
-            </span>
           </Link>
           <h1
             className="text-2xl font-bold mb-2"

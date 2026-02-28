@@ -27,16 +27,16 @@ export default async function CoursesPage() {
         <div className="max-w-7xl mx-auto">
           <Badge
             className="mb-4 text-xs font-bold uppercase tracking-wider"
-            style={{ backgroundColor: "rgba(245,130,30,0.15)", color: "#F5821E", border: "none" }}
+            style={{ backgroundColor: "rgba(127,198,199,0.15)", color: "#7fc6c7", border: "none" }}
           >
-            Course Catalog
+            Programs &amp; Workshops
           </Badge>
           <h1 className="text-3xl sm:text-4xl font-bold text-white mb-3">
-            Digital Pathways Program
+            The Helix Adult Academy
           </h1>
           <p className="text-slate-400 text-lg max-w-2xl">
-            A 4-year workforce readiness track built on 12-week modular semesters.
-            Move through Vision → Skill → Practice → Portfolio → Pathway.
+            Flexible programs for adult learners — choose the track that works for
+            your schedule, goals, and life.
           </p>
         </div>
       </div>

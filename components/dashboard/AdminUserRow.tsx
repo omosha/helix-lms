@@ -6,7 +6,7 @@ interface UserWithRelations {
   id: string;
   name: string | null;
   email: string;
-  role: "STUDENT" | "ADMIN" | "USER";
+  role: string;
   createdAt: Date;
   enrollments: { course: { title: string } }[];
   progress: { weekId: string }[];
@@ -25,7 +25,7 @@ const ROLE_COLORS = {
 };
 
 export function AdminUserRow({ user, index }: AdminUserRowProps) {
-  const roleColors = ROLE_COLORS[user.role];
+  const roleColors = ROLE_COLORS[user.role as keyof typeof ROLE_COLORS] ?? ROLE_COLORS.USER;
   const completedCount = user.progress.length;
 
   return (
