@@ -10,7 +10,10 @@
     "db:push": "prisma db push",
     "db:migrate": "prisma migrate dev",
     "db:seed": "npx tsx prisma/seed.ts",
-    "db:studio": "prisma studio"
+    "db:studio": "prisma studio",
+    "env:check": "bash scripts/validate-env.sh",
+    "env:push": "bash scripts/push-env-to-vercel.sh",
+    "deploy": "bash scripts/validate-env.sh && npx vercel --prod"
   },
   "prisma": {
     "seed": "npx tsx prisma/seed.ts"
@@ -22,6 +25,7 @@
     "bcryptjs": "^3.0.3",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
+    "dotenv": "^17.3.1",
     "lucide-react": "^0.575.0",
     "next": "16.1.6",
     "next-auth": "^5.0.0-beta.30",
